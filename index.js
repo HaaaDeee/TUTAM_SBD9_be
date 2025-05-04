@@ -3,9 +3,7 @@ const connectDB = require('./src/config/db');
 const postRoutes = require('./src/routes/postRoutes');
 const errorHandler = require('./src/middleware/errorHandler');
 const cors = require('cors');
-app.use(cors({
-    origin: "https://tutam-naufalhadirasikhin-sbd9be.vercel.app",
-}));
+
 
 require('dotenv').config();
 
@@ -15,6 +13,9 @@ const app = express();
 connectDB();
 
 // Middleware
+app.use(cors({
+    origin: "https://tutam-naufalhadirasikhin-sbd9be.vercel.app",
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
