@@ -4,7 +4,6 @@ const postRoutes = require('../src/routes/postRoutes');
 const errorHandler = require('../src/middleware/errorHandler');
 const cors = require('cors');
 
-
 require('dotenv').config();
 
 const app = express();
