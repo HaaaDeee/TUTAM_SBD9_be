@@ -1,45 +1,38 @@
-const Post = require('../models/Post');
+const posts = []; // Simpan data sementara di array (atau gunakan database)
 
 // Mendapatkan semua post
-exports.getPosts = async (req, res) => {
-    try {
-        const posts = await Post.find()
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }
+exports.getPosts = (req, res) => {
+    res.status(200).json(posts);
 };
 
 // Membuat post baru
-exports.createPost = async (req, res) => {
-    try {
-        const { name, title, content } = req.body;
+exports.createPost = (req, res) => {
+    const { name, title, content } = req.body;
 
-        // Buat post baru
-        const post = new Post({ name, title, content });
-        await post.save();
-
-        res.status(201).json(post);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+    if (!name || !title || !content) {
+        return res.status(400).json({ message: 'All fields are required' });
     }
+
+    const newPost = {
+        id: posts.length + 1,
+        name,
+        title,
+        content,
+    };
+
+    posts.push(newPost);
+    res.status(201).json(newPost);
 };
 
 // Menghapus post
-exports.deletePost = async (req, res) => {
-    try {
-        const { id } = req.params;
+exports.deletePost = (req, res) => {
+    const { id } = req.params;
+    const postIndex = posts.findIndex((post) => post.id === parseInt(id));
 
-        // Cari post berdasarkan ID
-        const post = await Post.findById(id);
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
-
-        // Hapus post
-        await post.remove();
-        res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+    if (postIndex === -1) {
+        return res.status(404).json({ message: 'Post not found' });
     }
+
+    posts.splice(postIndex, 1);
+    res.status(200).json({ message: 'Post deleted successfully' });
 };
