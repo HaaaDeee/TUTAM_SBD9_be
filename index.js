@@ -1,6 +1,5 @@
 const express = require('express');
 const connectDB = require('./src/config/db');
-const userRoutes = require('./src/routes/userRoutes');
 const postRoutes = require('./src/routes/postRoutes');
 const errorHandler = require('./src/middleware/errorHandler');
 const cors = require('cors');
